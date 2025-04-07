@@ -23,20 +23,18 @@ if REMOTE_URL:
         response = requests.get(REMOTE_URL)
         response.raise_for_status()
         catalog = response.json()
+
+        series_data = catalog["series"]
+        series_list = list(series_data.values())
+        titles = [s['title'] for s in series_list]
+        series_ids = [s['id'] for s in series_list]
+
     except Exception as e:
         st.error(f"Failed to load catalog: {e}")
         st.stop()
 else:
     st.warning("Missing catalog URL in Streamlit secrets.")
     st.stop()
-
-# Load the catalog
-with open(CATALOG_FILE, 'r') as f:
-    catalog = json.load(f)
-series_data = catalog["series"]
-series_list = list(series_data.values())
-titles = [s['title'] for s in series_list]
-series_ids = [s['id'] for s in series_list]
 
 # Hash titles for caching
 def hash_titles(titles):
