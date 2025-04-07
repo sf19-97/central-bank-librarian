@@ -15,6 +15,15 @@ EMBEDDINGS_CACHE = "fred_title_embeddings.npy"
 TITLES_CACHE = "fred_titles.npy"
 TITLES_HASH_FILE = "fred_title_hash.txt"
 
+# If the catalog doesn't exist (like on Streamlit Cloud), let the user upload it
+if not os.path.exists(CATALOG_FILE):
+    st.warning("Please upload your `fred_catalog.json` file.")
+    uploaded_file = st.file_uploader("Upload fred_catalog.json", type="json")
+    if uploaded_file is not None:
+        with open(CATALOG_FILE, "wb") as f:
+            f.write(uploaded_file.read())
+        st.experimental_rerun()
+    st.stop()
 # Load the catalog
 with open(CATALOG_FILE, 'r') as f:
     catalog = json.load(f)
