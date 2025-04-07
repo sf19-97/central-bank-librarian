@@ -43,7 +43,7 @@ def hash_titles(titles):
 # Load or generate embeddings
 @st.cache_resource(show_spinner=True)
 def get_embeddings():
-    model = SentenceTransformer("all-MiniLM-L6-v2")
+    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", cache_folder="local_model")
     if os.path.exists(EMBEDDINGS_CACHE) and os.path.exists(TITLES_CACHE):
         embeddings = np.load(EMBEDDINGS_CACHE)
         titles_loaded = np.load(TITLES_CACHE, allow_pickle=True)
